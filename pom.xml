@@ -103,7 +103,7 @@
 				<version>${maven-scm-plugin.version}</version>
 				<configuration>
 					<tag>${project.artifactId}-${project.version}</tag>
-					<connectionUrl>scm:git:https://github.com/netradius/ProtectPayClient.git</connectionUrl>
+					<connectionUrl>scm:git:git@github.com:netradius/ProtectPayClient.git</connectionUrl>
 				</configuration>
 			</plugin>
 			<plugin>
