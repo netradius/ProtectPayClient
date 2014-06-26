@@ -7,6 +7,8 @@ custom JAXB binding file to generate code from the ProtectPay WSDL URL. This
 library depends on the Glasfish Metro library to deal with proprietary
 extensions added by Microsoft in their SOAP implementation which ProPay uses.
 
+Javadoc documentation can be found at http://netradius.github.io/ProtectPayClient/apidocs/
+
 This library is available in the NetRadius maven repository located at 
 
 https://mirrors.netradius.com/nexus/content/repositories/releases
