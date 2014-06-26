@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Protectpayclient : Java client library for the ProPay ProtectPay API" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Protectpayclient</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/netradius/ProtectPayClient">View on GitHub</a>
+
+          <h1 id="project_title">Protectpayclient</h1>
+          <h2 id="project_tagline">Java client library for the ProPay ProtectPay API</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/netradius/ProtectPayClient/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/netradius/ProtectPayClient/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h3>
+<a name="welcome-to-the-protectpayclient-project" class="anchor" href="#welcome-to-the-protectpayclient-project"><span class="octicon octicon-link"></span></a>Welcome to the ProtectPayClient project.</h3>
+
+<p>The goal of this project is to create an easy to use Java client which provides
+integration to ProPay's ProtectPay product.  This project uses wsimport with a
+custom JAXB binding file to generate code from the ProtectPay WSDL URL. This
+library depends on the Glasfish Metro library to deal with proprietary
+extensions added by Microsoft in their SOAP implementation which ProPay uses. </p>
+
+<p>This library is available in the NetRadius maven repository located at </p>
+
+<p><a href="https://mirrors.netradius.com/nexus/content/repositories/releases">https://mirrors.netradius.com/nexus/content/repositories/releases</a></p>
+
+<p>In order to use this library in your project, add the following dependency</p>
+
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;com.netradius.protectpay&lt;/groupId&gt;
+    &lt;artifactId&gt;ProtectPayClient&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>You may also need to tell Maven where the repository is. In order to do this,
+you can add the following repository entry to your pom.xml file</p>
+
+<pre><code>&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;netradius-public-releases&lt;/id&gt;
+        &lt;name&gt;NetRadius Public Release Repository&lt;/name&gt;
+        &lt;url&gt;http://mirrors.netradius.com/nexus/content/groups/public&lt;/url&gt;
+        &lt;releases&gt;
+            &lt;enabled&gt;true&lt;/enabled&gt;
+            &lt;updatePolicy&gt;daily&lt;/updatePolicy&gt;
+            &lt;checksumPolicy&gt;warn&lt;/checksumPolicy&gt;
+        &lt;/releases&gt;
+        &lt;snapshots&gt;
+            &lt;enabled&gt;false&lt;/enabled&gt;
+        &lt;/snapshots&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Protectpayclient maintained by <a href="https://github.com/netradius">netradius</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
