@@ -113,7 +113,7 @@ public class PaymentResponse implements Serializable {
 	}
 
 	/**
-	 * Returns the transaction history ID.
+	 * Returns the transaction history ID. This value is assigned by ProtectPay.
 	 *
 	 * @return the transaction history ID
 	 */
@@ -122,7 +122,7 @@ public class PaymentResponse implements Serializable {
 	}
 
 	/**
-	 * Sets the transaction history ID.
+	 * Sets the transaction history ID. This value is assigned by ProtectPay.
 	 *
 	 * @param transactionHistoryId the transaction history ID
 	 */
@@ -131,7 +131,7 @@ public class PaymentResponse implements Serializable {
 	}
 
 	/**
-	 * Returns the transaction ID.
+	 * Returns the transaction ID. This value is assigned by the payment gateway or processor.
 	 *
 	 * @return the transaction ID
 	 */
@@ -140,7 +140,7 @@ public class PaymentResponse implements Serializable {
 	}
 
 	/**
-	 * Sets the transaction ID.
+	 * Sets the transaction ID. This value is assigned by the payment gateway or processor.
 	 *
 	 * @param transactionId the transaction ID
 	 */
