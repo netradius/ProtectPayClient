@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 /**
  * @author Erik R. Jensen
  */
-public class PaymentResponse implements Serializable {
+public class ProtectPayPaymentResponse implements Serializable {
 
 	private static final long serialVersionUID = 81905376598500784L;
 

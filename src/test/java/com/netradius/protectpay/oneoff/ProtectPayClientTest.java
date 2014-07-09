@@ -29,149 +29,150 @@ public class ProtectPayClientTest {
 
 			// Purge any payers with the same account name we are about to use
 			log.info("Purging previous payers named test");
-			Payer criteria = new Payer();
+			ProtectPayPayer criteria = new ProtectPayPayer();
 			criteria.setAccountName("test");
-			List<Payer> payers = client.getPayers(criteria);
-			for (Payer p : payers) {
+			List<ProtectPayPayer> protectPayPayers = client.getPayers(criteria);
+			for (ProtectPayPayer p : protectPayPayers) {
 				log.debug("Deleting payer " + p);
 				client.deletePayer(p.getPayerAccountId());
 			}
 
 			// Add new payer
 			log.info("Adding payer");
-			Payer payer = new Payer();
-			payer.setEmailAddress("test@netradius.com");
-			payer.setExternalId1("ExternalTest1");
-			payer.setExternalId2("ExternalTest2");
-			payer.setAccountName("test");
-			String payerAccountId = client.createPayer(payer);
-			assertEquals(payerAccountId, payer.getPayerAccountId());
+			ProtectPayPayer protectPayPayer = new ProtectPayPayer();
+			protectPayPayer.setEmailAddress("test@netradius.com");
+			protectPayPayer.setExternalId1("ExternalTest1");
+			protectPayPayer.setExternalId2("ExternalTest2");
+			protectPayPayer.setAccountName("test");
+			String payerAccountId = client.createPayer(protectPayPayer);
+			assertEquals(payerAccountId, protectPayPayer.getPayerAccountId());
 
 			// Update payer
 			log.info("Updating payer");
-			payer.setExternalId1("ExternalTest1Modified");
-			payer.setExternalId2("ExternalTest2Modified");
-			client.updatePayer(payer);
+			protectPayPayer.setExternalId1("ExternalTest1Modified");
+			protectPayPayer.setExternalId2("ExternalTest2Modified");
+			client.updatePayer(protectPayPayer);
 
 			// Test get payers
 			log.info("Getting payers");
-			payers = client.getPayers(criteria);
-			assertTrue(payers.size() == 1);
-			Payer updated = payers.get(0);
-			assertEquals(payer.getExternalId1(), updated.getExternalId1());
-			assertEquals(payer.getExternalId2(), updated.getExternalId2());
+			protectPayPayers = client.getPayers(criteria);
+			assertTrue(protectPayPayers.size() == 1);
+			ProtectPayPayer updated = protectPayPayers.get(0);
+			assertEquals(protectPayPayer.getExternalId1(), updated.getExternalId1());
+			assertEquals(protectPayPayer.getExternalId2(), updated.getExternalId2());
 
 			// Create payment method
 			log.info("Creating payment methods");
-			PaymentMethod paymentMethod = new PaymentMethod();
-			paymentMethod.setAccountName("John Doe");
-			paymentMethod.setPriority(1);
-			paymentMethod.setType(PaymentMethod.Type.Visa);
-			paymentMethod.setAccountNumber("4111111111111111");
-			paymentMethod.setDescription("Test Payment Method");
-			paymentMethod.setDuplicateAction(PaymentMethod.DuplicateAction.ERROR);
-			paymentMethod.setExpirationDate("0625");
-			paymentMethod.setPayerAccountId(payer.getPayerAccountId());
-			BillingInfo billingInfo = new BillingInfo();
-			billingInfo.setAddress1("PO Box 463");
-			billingInfo.setCity("Draper");
-			billingInfo.setState("UT");
-			billingInfo.setCountry(BillingInfo.Country.USA);
-			billingInfo.setZipCode("84020");
-			billingInfo.setEmailAddress("test@netradius.com");
-			paymentMethod.setBilling(billingInfo);
-			String paymentMethodId = client.createPaymentMethod(paymentMethod);
-			assertEquals(paymentMethodId, paymentMethod.getPaymentMethodId());
+			ProtectPayPaymentMethod protectPayPaymentMethod = new ProtectPayPaymentMethod();
+			protectPayPaymentMethod.setAccountName("John Doe");
+			protectPayPaymentMethod.setPriority(1);
+			protectPayPaymentMethod.setType(ProtectPayPaymentMethod.Type.Visa);
+			protectPayPaymentMethod.setAccountNumber("4111111111111111");
+			protectPayPaymentMethod.setDescription("Test Payment Method");
+			protectPayPaymentMethod.setDuplicateAction(ProtectPayPaymentMethod.DuplicateAction.ERROR);
+			protectPayPaymentMethod.setExpirationDate("0625");
+			protectPayPaymentMethod.setPayerAccountId(protectPayPayer.getPayerAccountId());
+			ProtectPayBillingInfo protectPayBillingInfo = new ProtectPayBillingInfo();
+			protectPayBillingInfo.setAddress1("PO Box 463");
+			protectPayBillingInfo.setCity("Draper");
+			protectPayBillingInfo.setState("UT");
+			protectPayBillingInfo.setCountry(ProtectPayBillingInfo.Country.USA);
+			protectPayBillingInfo.setZipCode("84020");
+			protectPayBillingInfo.setEmailAddress("test@netradius.com");
+			protectPayPaymentMethod.setBilling(protectPayBillingInfo);
+			String paymentMethodId = client.createPaymentMethod(protectPayPaymentMethod);
+			assertEquals(paymentMethodId, protectPayPaymentMethod.getPaymentMethodId());
 
 			// Update payment method
 			log.info("Updating payment method");
-			paymentMethod.setExpirationDate("0725");
-			client.updatePaymentMethod(paymentMethod);
+			protectPayPaymentMethod.setExpirationDate("0725");
+			client.updatePaymentMethod(protectPayPaymentMethod);
 
 			// Get payment method
 			log.info("Getting payment method");
-			PaymentMethod pm = client.getPaymentMethod(
-					paymentMethod.getPayerAccountId(), paymentMethod.getPaymentMethodId());
+			ProtectPayPaymentMethod pm = client.getPaymentMethod(
+					protectPayPaymentMethod.getPayerAccountId(), protectPayPaymentMethod.getPaymentMethodId());
 			assertNotNull(pm);
-			assertEquals(pm.getPaymentMethodId(), paymentMethod.getPaymentMethodId());
+			assertEquals(pm.getPaymentMethodId(), protectPayPaymentMethod.getPaymentMethodId());
 			assertEquals("0725", pm.getExpirationDate());
 
 			// Get all payment methods for payer
 			log.info("Getting all payment methods");
-			List<PaymentMethod> paymentMethods = client.getPaymentMethods(paymentMethod.getPayerAccountId());
-			assertEquals(1, paymentMethods.size());
-			assertEquals(paymentMethod.getPaymentMethodId(), paymentMethods.get(0).getPaymentMethodId());
+			List<ProtectPayPaymentMethod> protectPayPaymentMethods = client.getPaymentMethods(protectPayPaymentMethod.getPayerAccountId());
+			assertEquals(1, protectPayPaymentMethods.size());
+			assertEquals(protectPayPaymentMethod.getPaymentMethodId(), protectPayPaymentMethods.get(0).getPaymentMethodId());
 
 			// Capture
 			log.info("Executing auth");
-			Payment payment = new Payment();
-			payment.setAmount(100);
-			payment.setPayerAccountId(paymentMethod.getPayerAccountId());
-			payment.setPaymentMethodId(paymentMethod.getPaymentMethodId());
-			payment.setComment1("This is a test transaction");
-			payment.setComment2("This is a test transaction");
-			payment.setInputIpAddress("127.0.0.1");
-			payment.setInvoice(Integer.toString(rand.nextInt(100000) + 1));
-			payment.setCurrencyCode("USD");
-			PaymentResponse response = client.auth(payment, false);
+			ProtectPayPayment protectPayPayment = new ProtectPayPayment();
+			protectPayPayment.setAmount(100);
+			protectPayPayment.setPayerAccountId(protectPayPaymentMethod.getPayerAccountId());
+			protectPayPayment.setPaymentMethodId(protectPayPaymentMethod.getPaymentMethodId());
+			protectPayPayment.setComment1("This is a test transaction");
+			protectPayPayment.setComment2("This is a test transaction");
+			protectPayPayment.setInputIpAddress("127.0.0.1");
+			protectPayPayment.setInvoice(Integer.toString(rand.nextInt(100000) + 1));
+			protectPayPayment.setCurrencyCode("USD");
+			ProtectPayPaymentResponse response = client.auth(protectPayPayment, false);
 			log.info("Auth Response: " + response.toString());
 			assertEquals("00", response.getResultCode());
 			log.info("Executing capture");
-			PriorPayment priorPayment = new PriorPayment();
-			priorPayment.setTransactionHistoryId(response.getTransactionHistoryId());
-			priorPayment.setOriginalTransactionId(response.getTransactionId());
-			response = client.capture(priorPayment, payment.getAmount());
+			ProtectPayPriorPayment protectPayPriorPayment = new ProtectPayPriorPayment();
+			protectPayPriorPayment.setTransactionHistoryId(response.getTransactionHistoryId());
+			protectPayPriorPayment.setOriginalTransactionId(response.getTransactionId());
+			response = client.capture(protectPayPriorPayment, protectPayPayment.getAmount());
 			log.info("Capture Response: " + response.toString());
 			assertEquals("00", response.getResultCode());
 
 			// Auth & Capture
 			log.info("Executing authAndCapture");
-			payment.setInvoice(Integer.toString(rand.nextInt(100000) + 1));
-			response = client.authAndCapture(payment, false);
+			protectPayPayment.setInvoice(Integer.toString(rand.nextInt(100000) + 1));
+			response = client.authAndCapture(protectPayPayment, false);
 			log.info("Auth & Capture Response: " + response.toString());
 			assertEquals("00", response.getResultCode());
 
 			// Void
-			payment.setInvoice(Integer.toString(rand.nextInt(100000) + 1));
-			response = client.auth(payment, true);
+			protectPayPayment.setInvoice(Integer.toString(rand.nextInt(100000) + 1));
+			response = client.auth(protectPayPayment, true);
 			log.info("Executing Void");
-			priorPayment = new PriorPayment();
-			priorPayment.setOriginalTransactionId(response.getTransactionId());
-			priorPayment.setTransactionHistoryId(response.getTransactionHistoryId());
-			priorPayment.setComment1("test");
-			priorPayment.setComment2("test");
-			response = client.voidPayment(priorPayment);
+			protectPayPriorPayment = new ProtectPayPriorPayment();
+			protectPayPriorPayment.setOriginalTransactionId(response.getTransactionId());
+			protectPayPriorPayment.setTransactionHistoryId(response.getTransactionHistoryId());
+			protectPayPriorPayment.setComment1("test");
+			protectPayPriorPayment.setComment2("test");
+			response = client.voidPayment(protectPayPriorPayment);
 			log.info("Void Response: " + response.toString());
 			assertEquals("00", response.getResultCode());
 
 			// Refund
 			log.info("Executing Refund");
-			payment.setInvoice(Integer.toString(rand.nextInt(100000) + 1));
-			response = client.authAndCapture(payment, true);
-			priorPayment = new PriorPayment();
-			priorPayment.setOriginalTransactionId(response.getTransactionId());
-			priorPayment.setTransactionHistoryId(response.getTransactionHistoryId());
-			priorPayment.setComment1("test");
-			priorPayment.setComment2("test");
-			response = client.refund(priorPayment, 10);
+			protectPayPayment.setInvoice(Integer.toString(rand.nextInt(100000) + 1));
+			response = client.authAndCapture(protectPayPayment, true);
+			protectPayPriorPayment = new ProtectPayPriorPayment();
+			protectPayPriorPayment.setOriginalTransactionId(response.getTransactionId());
+			protectPayPriorPayment.setTransactionHistoryId(response.getTransactionHistoryId());
+			protectPayPriorPayment.setComment1("test");
+			protectPayPriorPayment.setComment2("test");
+			response = client.refund(protectPayPriorPayment, 10);
 			log.info("Refund Response: " + response.toString());
 			assertEquals("00", response.getResultCode());
 
 			// Credit
 			log.info("Executing Credit");
-			response = client.credit(payment);
+			response = client.credit(protectPayPayment);
 			log.info("Credit Response: " + response.toString());
 			assertEquals("00", response.getResultCode());
 
 			// Delete payment method
-			client.deletePaymentMethod(paymentMethod.getPayerAccountId(), paymentMethod.getPaymentMethodId());
-			paymentMethods = client.getPaymentMethods(paymentMethod.getPayerAccountId());
-			assertEquals(0, paymentMethods.size());
+			client.deletePaymentMethod(protectPayPaymentMethod.getPayerAccountId(),
+					protectPayPaymentMethod.getPaymentMethodId());
+			protectPayPaymentMethods = client.getPaymentMethods(protectPayPaymentMethod.getPayerAccountId());
+			assertEquals(0, protectPayPaymentMethods.size());
 
 			// Delete payer
-			payers = client.getPayers(criteria);
-			assertTrue(payers.size() > 0);
-			for (Payer p : payers) {
+			protectPayPayers = client.getPayers(criteria);
+			assertTrue(protectPayPayers.size() > 0);
+			for (ProtectPayPayer p : protectPayPayers) {
 				log.debug("Deleting payer " + p);
 				client.deletePayer(p.getPayerAccountId());
 			}

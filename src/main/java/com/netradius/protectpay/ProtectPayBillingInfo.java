@@ -13,7 +13,7 @@ import java.util.Set;
  *
  * @author Erik R. Jensen
  */
-public class BillingInfo implements Serializable {
+public class ProtectPayBillingInfo implements Serializable {
 
 	private static final long serialVersionUID = -7562334844020586761L;
 
@@ -230,7 +230,7 @@ public class BillingInfo implements Serializable {
 	 *
 	 * @return constraint violations
 	 */
-	public Set<ConstraintViolation<BillingInfo>> validate() {
+	public Set<ConstraintViolation<ProtectPayBillingInfo>> validate() {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		Validator validator = factory.getValidator();
 		return validator.validate(this, getClass());

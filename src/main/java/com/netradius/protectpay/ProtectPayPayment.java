@@ -6,7 +6,6 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Set;
 
 /**
@@ -14,7 +13,7 @@ import java.util.Set;
  *
  * @author Erik R. Jensen
  */
-public class Payment implements Serializable {
+public class ProtectPayPayment implements Serializable {
 
 	private static final long serialVersionUID = -3592399706967798790L;
 
@@ -226,7 +225,7 @@ public class Payment implements Serializable {
 	 *
 	 * @return constraint violations
 	 */
-	public Set<ConstraintViolation<Payment>> validate() {
+	public Set<ConstraintViolation<ProtectPayPayment>> validate() {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		Validator validator = factory.getValidator();
 		return validator.validate(this, getClass());

@@ -13,7 +13,7 @@ import java.util.Set;
  *
  * @author Erik R. Jensen
  */
-public class Payer implements Serializable {
+public class ProtectPayPayer implements Serializable {
 
 	private static final long serialVersionUID = -4995464451681457712L;
 
@@ -142,7 +142,7 @@ public class Payer implements Serializable {
 	 *
 	 * @return constraint violations
 	 */
-	public Set<ConstraintViolation<Payer>> validate() {
+	public Set<ConstraintViolation<ProtectPayPayer>> validate() {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		Validator validator = factory.getValidator();
 		return validator.validate(this, getClass());

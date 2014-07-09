@@ -3,7 +3,6 @@ package com.netradius.protectpay;
 import javax.validation.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -17,7 +16,7 @@ public class CreditCardOverride implements Serializable {
 	private static final long serialVersionUID = -60541015419445010L;
 
 	@Valid
-	private BillingInfo billing;
+	private ProtectPayBillingInfo billing;
 
 	@Size(max = 4)
 	private String cvv;
@@ -33,7 +32,7 @@ public class CreditCardOverride implements Serializable {
 	 *
 	 * @return the billing information
 	 */
-	public BillingInfo getBilling() {
+	public ProtectPayBillingInfo getBilling() {
 		return billing;
 	}
 
@@ -42,7 +41,7 @@ public class CreditCardOverride implements Serializable {
 	 *
 	 * @param billing the billing information
 	 */
-	public void setBilling(BillingInfo billing) {
+	public void setBilling(ProtectPayBillingInfo billing) {
 		this.billing = billing;
 	}
 

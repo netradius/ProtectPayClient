@@ -7,7 +7,7 @@ import java.io.Serializable;
  *
  * @author Erik R. Jensen
  */
-public class PriorPayment implements Serializable {
+public class ProtectPayPriorPayment implements Serializable {
 
 	private static final long serialVersionUID = 3678260477933994506L;
 

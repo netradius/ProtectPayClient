@@ -11,7 +11,7 @@ import java.util.Set;
  *
  * @author Erik R. Jensen
  */
-public class PaymentMethod implements Serializable {
+public class ProtectPayPaymentMethod implements Serializable {
 
 	private static final long serialVersionUID = -5673867769460368617L;
 
@@ -80,7 +80,7 @@ public class PaymentMethod implements Serializable {
 	private Integer priority;
 
 	@Valid
-	private BillingInfo billing;
+	private ProtectPayBillingInfo billing;
 
 	private Date dateCreated;
 
@@ -306,7 +306,7 @@ public class PaymentMethod implements Serializable {
 	 *
 	 * @return the billing information
 	 */
-	public BillingInfo getBilling() {
+	public ProtectPayBillingInfo getBilling() {
 		return billing;
 	}
 
@@ -315,7 +315,7 @@ public class PaymentMethod implements Serializable {
 	 *
 	 * @param billing the billing information
 	 */
-	public void setBilling(BillingInfo billing) {
+	public void setBilling(ProtectPayBillingInfo billing) {
 		this.billing = billing;
 	}
 
@@ -362,7 +362,7 @@ public class PaymentMethod implements Serializable {
 	 *
 	 * @return constraint violations
 	 */
-	public Set<ConstraintViolation<PaymentMethod>> validate() {
+	public Set<ConstraintViolation<ProtectPayPaymentMethod>> validate() {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		Validator validator = factory.getValidator();
 		return validator.validate(this, getClass());
