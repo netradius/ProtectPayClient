@@ -11,7 +11,7 @@ import com.netradius.payvision.client.exception.PayVisionBadRequestException;
 import com.netradius.payvision.client.exception.PayVisionException;
 import com.netradius.payvision.client.exception.PayVisionForbiddenException;
 import com.netradius.payvision.client.exception.PayVisionNotFoundException;
-import com.sun.deploy.util.StringUtils;
+import com.netradius.payvision.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -233,8 +233,7 @@ public class HttpURLConnectionClient implements HttpClient, Serializable {
 				Map<String, Object> temp = (Map) entrySet.getValue();
 				temp.entrySet()
 					.stream()
-					.filter(entrySet1 -> entrySet1.getValue() != null && !StringUtils.trimWhitespace(entrySet1
-							.getValue().toString()).isEmpty())
+					.filter(entrySet1 -> entrySet1.getValue() != null && StringUtils.hasText(entrySet1.getValue().toString()))
 					.forEach(entrySet1 -> {
 						if (entrySet1.getValue() instanceof Double) {
 							String amtFmt = d.format(entrySet1.getValue());
@@ -246,8 +245,7 @@ public class HttpURLConnectionClient implements HttpClient, Serializable {
 						}
 					});
 			} else {
-				if (entrySet.getValue() != null && !com.sun.deploy.util.StringUtils.trimWhitespace(entrySet
-						.getValue().toString()).isEmpty()) {
+				if (entrySet.getValue() != null && StringUtils.hasText(entrySet.getValue().toString())) {
 
 					if (entrySet.getValue() instanceof Double) {
 						String amtFmt = d.format(entrySet.getValue());
