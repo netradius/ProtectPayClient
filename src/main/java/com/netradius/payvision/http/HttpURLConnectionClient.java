@@ -62,6 +62,7 @@ public class HttpURLConnectionClient implements HttpClient, Serializable {
 					BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
 				return new JsonDeserializer<Enum>() {
 					@Override
+					@SuppressWarnings("unchecked")
 					public Enum deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
 						Class<? extends Enum> rawClass = (Class<Enum<?>>) type.getRawClass();
 						return Enum.valueOf(rawClass, jp.getValueAsString().toUpperCase());
@@ -84,10 +85,8 @@ public class HttpURLConnectionClient implements HttpClient, Serializable {
 				.append("  Request Method: ").append(conn.getRequestMethod()).append("\n");
 		Map<String, List<String>> headers = conn.getRequestProperties();
 		sb.append("  Request Headers:\n");
-		headers.keySet().stream().filter(key -> key != null).forEach(key -> {
-			sb.append("    ").append(key).append(": ")
-			  .append(headers.get(key)).append("\n");
-		});
+		headers.keySet().stream().filter(key -> key != null).forEach(
+				key -> sb.append("    ").append(key).append(": ").append(headers.get(key)).append("\n"));
 		sb.append("  Request Body:\n").append(body);
 		log.debug(sb.toString());
 	}
@@ -97,10 +96,8 @@ public class HttpURLConnectionClient implements HttpClient, Serializable {
 				.append("  Response Code: ").append(conn.getResponseCode()).append("\n");
 		Map<String, List<String>> headers = conn.getHeaderFields();
 		sb.append("  Response Headers:\n");
-		headers.keySet().stream().filter(key -> key != null).forEach(key -> {
-			sb.append("    ").append(key).append(": ")
-			  .append(headers.get(key)).append("\n");
-		});
+		headers.keySet().stream().filter(key -> key != null).forEach(
+				key -> sb.append("    ").append(key).append(": ").append(headers.get(key)).append("\n"));
 		sb.append("  Response Body:\n").append(body);
 		log.debug(sb.toString());
 	}
@@ -222,6 +219,7 @@ public class HttpURLConnectionClient implements HttpClient, Serializable {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private String mapToQueryParams(HashMap<String, Object> params) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("username").append("=").append(username).append("&");
@@ -290,6 +288,7 @@ public class HttpURLConnectionClient implements HttpClient, Serializable {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <T> T post(String url, Class<T> responseTypeClazz, Object requestObject, ResponseContentType contentType)
 			throws IOException {
 		HttpURLConnection conn = null;
