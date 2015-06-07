@@ -38,7 +38,7 @@ public class PatVisionClientTest {
 		req.setTransactionId(response.getTransactionId());
 		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
 		response = pvc.process(req);
-		org.junit.Assert.assertEquals(response.getTransactionStatus(), TransactionStatus.APPROVED);
+		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class PatVisionClientTest {
 		req.setAmount(new BigDecimal("50"));
 		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
 		response = pvc.process(req);
-		org.junit.Assert.assertEquals(response.getTransactionStatus(), TransactionStatus.APPROVED);
+		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 	}
 
 	@Test
@@ -60,7 +60,7 @@ public class PatVisionClientTest {
 		req.setAmount(new BigDecimal("50"));
 		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
 		response = pvc.process(req);
-		org.junit.Assert.assertEquals(response.getTransactionStatus(), TransactionStatus.APPROVED);
+		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class PatVisionClientTest {
 
 		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
 		PayVisionPaymentResponse response = pvc.process(request);
-		org.junit.Assert.assertEquals(response.getTransactionStatus(), TransactionStatus.APPROVED);
+		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 	}
 
 
@@ -89,7 +89,7 @@ public class PatVisionClientTest {
 
 		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
 		PayVisionPaymentResponse response = pvc.process(req);
-		org.junit.Assert.assertEquals(response.getTransactionStatus(), TransactionStatus.APPROVED);
+		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class PatVisionClientTest {
 
 		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
 		PayVisionPaymentResponse response = pvc.process(req);
-		org.junit.Assert.assertEquals(response.getTransactionStatus(), TransactionStatus.APPROVED);
+		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 
 		PayVisionUpdateRequest updateRequest = new PayVisionUpdateRequest();
 		updateRequest.setFirstName("test");
@@ -115,7 +115,7 @@ public class PatVisionClientTest {
 		updateRequest.setDiscountAmount(new BigDecimal("10"));
 		pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
 		response = pvc.process(updateRequest);
-		org.junit.Assert.assertEquals(response.getTransactionStatus(), TransactionStatus.APPROVED);
+		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 	}
 
 	@Test
@@ -124,7 +124,7 @@ public class PatVisionClientTest {
 		PayVisionPaymentResponse response = doCapture();
 		PayVisionQueryRequest req = new PayVisionQueryRequest();
 		req.setTransactionId(response.getTransactionId());
-		req.setActionType(PayVisionQueryActionType.AUTH);
+	//	req.setActionType(PayVisionQueryActionType.AUTH);
 		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/query.php", "siselshaun", "nmisisel15");
 		PayVisionQueryResponse res = pvc.query(req);
 		Assert.assertNotNull(res.getTransaction());
@@ -140,13 +140,13 @@ public class PatVisionClientTest {
 
 		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
 		response = pvc.process(payVisionPayment);
-		org.junit.Assert.assertEquals(response.getTransactionStatus(), TransactionStatus.APPROVED);
+		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 		return response;
 	}
 
 	private PayVisionPaymentResponse doAuth(String orderId) throws IOException {
 		PayVisionAuthRequest payVisionPayment = new PayVisionAuthRequest();
-		payVisionPayment.setAmount(new BigDecimal("110.00"));
+		payVisionPayment.setAmount(new BigDecimal("113.00"));
 		payVisionPayment.setCurrency("USD");
 		OrderInfo orderInfo = new OrderInfo();
 		orderInfo.setOrderId(orderId);
@@ -156,7 +156,7 @@ public class PatVisionClientTest {
 		//payVisionPayment.setPaymentDescriptor(new PaymentDescriptor());
 		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
 		PayVisionPaymentResponse response = pvc.process(payVisionPayment);
-		org.junit.Assert.assertEquals(response.getTransactionStatus(), TransactionStatus.APPROVED);
+		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 		return response;
 	}
 
