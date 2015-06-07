@@ -1,6 +1,5 @@
 package com.netradius.payvision;
 
-import com.netradius.payvision.PayVisionClient;
 import com.netradius.payvision.request.*;
 import com.netradius.payvision.response.PayVisionPaymentResponse;
 import com.netradius.payvision.response.PayVisionQueryResponse;
@@ -68,6 +67,7 @@ public class PatVisionClientTest {
 		PayVisionValidateRequest request = new PayVisionValidateRequest();
 		request.setCreditCard(creditCard());
 		request.setBillingInfo(billingInfo());
+		request.setBillingInfo(billingInfo());
 
 		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
 		PayVisionPaymentResponse response = pvc.process(request);
@@ -79,7 +79,8 @@ public class PatVisionClientTest {
 	public void testSale() throws IOException {
 		String orderID = "TEST" + RANDOM.nextInt();
 		PayVisionSaleRequest req = new PayVisionSaleRequest();
-		req.setAmount(new BigDecimal("100.00"));
+		int amount = Math.abs(RANDOM.nextInt()%1000);
+		req.setAmount(new BigDecimal(amount));
 		req.setCurrency("USD");
 		OrderInfo orderInfo = new OrderInfo();
 		orderInfo.setOrderId(orderID);
@@ -135,7 +136,7 @@ public class PatVisionClientTest {
 		String orderID = "TEST" + RANDOM.nextInt();
 		PayVisionPaymentResponse response = doAuth(orderID);
 		PayVisionCaptureRequest payVisionPayment = new PayVisionCaptureRequest();
-		payVisionPayment.setAmount(new BigDecimal("94.00"));
+		payVisionPayment.setAmount(new BigDecimal("10.00"));
 		payVisionPayment.setTransactionId(response.getTransactionId());
 
 		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
@@ -145,8 +146,9 @@ public class PatVisionClientTest {
 	}
 
 	private PayVisionPaymentResponse doAuth(String orderId) throws IOException {
+		int amount = Math.abs(RANDOM.nextInt()%1000);
 		PayVisionAuthRequest payVisionPayment = new PayVisionAuthRequest();
-		payVisionPayment.setAmount(new BigDecimal("113.00"));
+		payVisionPayment.setAmount(new BigDecimal(amount));
 		payVisionPayment.setCurrency("USD");
 		OrderInfo orderInfo = new OrderInfo();
 		orderInfo.setOrderId(orderId);
@@ -170,8 +172,8 @@ public class PatVisionClientTest {
 
 	private BillingInfo billingInfo() {
 		BillingInfo b =  new BillingInfo();
-		b.setAddress1("test 21123adddresse21");
-		b.setAddress2("test a213213ddtess 22321");
+		b.setAddress1("test adddress1");
+		b.setAddress2("test adddress2");
 		b.setCity("Test c123213213oty");
 		b.setCountry("US");
 		//b.setEmail();
