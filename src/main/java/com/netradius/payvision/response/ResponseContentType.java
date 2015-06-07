@@ -1,4 +1,4 @@
-package com.netradius.payvision.client;
+package com.netradius.payvision.response;
 
 /**
  * @author Abhinav Nahar

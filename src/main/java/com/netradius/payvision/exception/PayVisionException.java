@@ -1,4 +1,4 @@
-package com.netradius.payvision.client.exception;
+package com.netradius.payvision.exception;
 
 import java.io.IOException;
 

@@ -1,4 +1,6 @@
-import com.netradius.payvision.client.PayVisionClient;
+package com.netradius.payvision;
+
+import com.netradius.payvision.PayVisionClient;
 import com.netradius.payvision.request.*;
 import com.netradius.payvision.response.PayVisionPaymentResponse;
 import com.netradius.payvision.response.PayVisionQueryResponse;

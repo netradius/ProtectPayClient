@@ -1,4 +1,4 @@
-package com.netradius.payvision.client;
+package com.netradius.payvision.http;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -7,10 +7,12 @@ import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.netradius.payvision.client.exception.PayVisionBadRequestException;
-import com.netradius.payvision.client.exception.PayVisionException;
-import com.netradius.payvision.client.exception.PayVisionForbiddenException;
-import com.netradius.payvision.client.exception.PayVisionNotFoundException;
+import com.netradius.payvision.response.PayVisionError;
+import com.netradius.payvision.response.ResponseContentType;
+import com.netradius.payvision.exception.PayVisionBadRequestException;
+import com.netradius.payvision.exception.PayVisionException;
+import com.netradius.payvision.exception.PayVisionForbiddenException;
+import com.netradius.payvision.exception.PayVisionNotFoundException;
 import com.netradius.payvision.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,14 +55,11 @@ public class HttpURLConnectionClient implements HttpClient, Serializable {
 		authorization = "Basic " + DatatypeConverter.printBase64Binary(authorization.getBytes(Charset.forName("UTF-8")));
 		this.username = username;
 		this.password = password;
-		mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
 		module.setDeserializerModifier(new BeanDeserializerModifier() {
 			@Override
-			public JsonDeserializer<Enum> modifyEnumDeserializer(DeserializationConfig config,
-					final JavaType type,
-					BeanDescription beanDesc,
-					final JsonDeserializer<?> deserializer) {
+			public JsonDeserializer<Enum> modifyEnumDeserializer(DeserializationConfig config, JavaType type,
+					BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
 				return new JsonDeserializer<Enum>() {
 					@Override
 					public Enum deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
@@ -290,6 +289,7 @@ public class HttpURLConnectionClient implements HttpClient, Serializable {
 	//TODO	res.setResponseStatus(PayVisionResponseStatus.getTransactionStatusById(res.getResponseCode()));
 	}
 
+	@Override
 	public <T> T post(String url, Class<T> responseTypeClazz, Object requestObject, ResponseContentType contentType)
 			throws IOException {
 		HttpURLConnection conn = null;

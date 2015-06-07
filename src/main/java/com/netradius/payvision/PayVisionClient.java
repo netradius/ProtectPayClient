@@ -1,9 +1,11 @@
-package com.netradius.payvision.client;
+package com.netradius.payvision;
 
+import com.netradius.payvision.http.HttpURLConnectionClient;
 import com.netradius.payvision.request.PayVisionQueryRequest;
 import com.netradius.payvision.request.PayVisionRequest;
 import com.netradius.payvision.response.PayVisionPaymentResponse;
 import com.netradius.payvision.response.PayVisionQueryResponse;
+import com.netradius.payvision.response.ResponseContentType;
 
 import java.io.IOException;
 
