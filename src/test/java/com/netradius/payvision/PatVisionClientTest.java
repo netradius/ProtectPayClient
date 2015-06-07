@@ -45,7 +45,7 @@ public class PatVisionClientTest {
 		PayVisionPaymentResponse response = doCapture();
 		PayVisionRefundRequest req = new PayVisionRefundRequest();
 		req.setTransactionId(response.getTransactionId());
-		req.setAmount(new BigDecimal("50"));
+		req.setAmount(new BigDecimal("5"));
 		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
 		response = pvc.process(req);
 		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
@@ -56,7 +56,7 @@ public class PatVisionClientTest {
 		PayVisionPaymentResponse response = doCapture();
 		PayVisionCreditRequest req = new PayVisionCreditRequest();
 		req.setTransactionId(response.getTransactionId());
-		req.setAmount(new BigDecimal("50"));
+		req.setAmount(new BigDecimal(40));
 		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
 		response = pvc.process(req);
 		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
@@ -96,8 +96,9 @@ public class PatVisionClientTest {
 	@Test
 	public void testUpdate() throws IOException {
 		String orderID = "TEST" + RANDOM.nextInt();
+		int amount = Math.abs(RANDOM.nextInt()%1000);
 		PayVisionSaleRequest req = new PayVisionSaleRequest();
-		req.setAmount(new BigDecimal("152.00"));
+		req.setAmount(new BigDecimal(amount));
 		req.setCurrency("USD");
 		OrderInfo orderInfo = new OrderInfo();
 		orderInfo.setOrderId(orderID);
