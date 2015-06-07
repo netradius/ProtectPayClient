@@ -5,6 +5,7 @@ import com.netradius.payvision.response.PayVisionPaymentResponse;
 import com.netradius.payvision.response.PayVisionQueryResponse;
 import com.netradius.payvision.response.TransactionStatus;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -17,8 +18,14 @@ import java.util.Random;
  */
 public class PatVisionClientTest {
 
-	public static final Random RANDOM = new Random(System.currentTimeMillis());
-	//TODO bankaccount
+	public static final Random RANDOM = new Random();
+	private static PayVisionClient client;
+
+	@BeforeClass
+	public static void init() {
+		TestConfig config = new TestConfig();
+		client = new PayVisionClient(config.getUsername(), config.getPassword());
+	}
 
 	@Test
 	public void testAuth() throws IOException {
@@ -35,8 +42,7 @@ public class PatVisionClientTest {
 		PayVisionPaymentResponse response = doCapture();
 		PavVisionVoidRequest req = new PavVisionVoidRequest();
 		req.setTransactionId(response.getTransactionId());
-		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
-		response = pvc.process(req);
+		response = client.process(req);
 		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 	}
 
@@ -46,8 +52,7 @@ public class PatVisionClientTest {
 		PayVisionRefundRequest req = new PayVisionRefundRequest();
 		req.setTransactionId(response.getTransactionId());
 		req.setAmount(new BigDecimal("50"));
-		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
-		response = pvc.process(req);
+		response = client.process(req);
 		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 	}
 
@@ -57,8 +62,7 @@ public class PatVisionClientTest {
 		PayVisionCreditRequest req = new PayVisionCreditRequest();
 		req.setTransactionId(response.getTransactionId());
 		req.setAmount(new BigDecimal("50"));
-		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
-		response = pvc.process(req);
+		response = client.process(req);
 		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 	}
 
@@ -68,9 +72,7 @@ public class PatVisionClientTest {
 		request.setCreditCard(creditCard());
 		request.setBillingInfo(billingInfo());
 		request.setBillingInfo(billingInfo());
-
-		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
-		PayVisionPaymentResponse response = pvc.process(request);
+		PayVisionPaymentResponse response = client.process(request);
 		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 	}
 
@@ -79,7 +81,7 @@ public class PatVisionClientTest {
 	public void testSale() throws IOException {
 		String orderID = "TEST" + RANDOM.nextInt();
 		PayVisionSaleRequest req = new PayVisionSaleRequest();
-		int amount = Math.abs(RANDOM.nextInt()%1000);
+		int amount = Math.abs(RANDOM.nextInt() % 1000);
 		req.setAmount(new BigDecimal(amount));
 		req.setCurrency("USD");
 		OrderInfo orderInfo = new OrderInfo();
@@ -87,9 +89,7 @@ public class PatVisionClientTest {
 		req.setOrderInfo(orderInfo);
 		req.setCreditCard(creditCard());
 		req.setBillingInfo(billingInfo());
-
-		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
-		PayVisionPaymentResponse response = pvc.process(req);
+		PayVisionPaymentResponse response = client.process(req);
 		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 	}
 
@@ -105,8 +105,7 @@ public class PatVisionClientTest {
 		req.setCreditCard(creditCard());
 		req.setBillingInfo(billingInfo());
 
-		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
-		PayVisionPaymentResponse response = pvc.process(req);
+		PayVisionPaymentResponse response = client.process(req);
 		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 
 		PayVisionUpdateRequest updateRequest = new PayVisionUpdateRequest();
@@ -114,8 +113,7 @@ public class PatVisionClientTest {
 		updateRequest.setLastName("last");
 		updateRequest.setTransactionId(response.getTransactionId());
 		updateRequest.setDiscountAmount(new BigDecimal("10"));
-		pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
-		response = pvc.process(updateRequest);
+		response = client.process(updateRequest);
 		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 	}
 
@@ -126,8 +124,7 @@ public class PatVisionClientTest {
 		PayVisionQueryRequest req = new PayVisionQueryRequest();
 		req.setTransactionId(response.getTransactionId());
 	//	req.setActionType(PayVisionQueryActionType.AUTH);
-		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/query.php", "siselshaun", "nmisisel15");
-		PayVisionQueryResponse res = pvc.query(req);
+		PayVisionQueryResponse res = client.query(req);
 		Assert.assertNotNull(res.getTransaction());
 		Assert.assertEquals(2, res.getTransaction().getAction().length);
 	}
@@ -139,8 +136,7 @@ public class PatVisionClientTest {
 		payVisionPayment.setAmount(new BigDecimal("10.00"));
 		payVisionPayment.setTransactionId(response.getTransactionId());
 
-		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
-		response = pvc.process(payVisionPayment);
+		response = client.process(payVisionPayment);
 		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 		return response;
 	}
@@ -156,8 +152,7 @@ public class PatVisionClientTest {
 		payVisionPayment.setCreditCard(creditCard());
 		payVisionPayment.setBillingInfo(billingInfo());
 		//payVisionPayment.setPaymentDescriptor(new PaymentDescriptor());
-		PayVisionClient pvc = new PayVisionClient("https://secure.nmi.com/api/transact.php", "siselshaun", "nmisisel15");
-		PayVisionPaymentResponse response = pvc.process(payVisionPayment);
+		PayVisionPaymentResponse response = client.process(payVisionPayment);
 		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
 		return response;
 	}

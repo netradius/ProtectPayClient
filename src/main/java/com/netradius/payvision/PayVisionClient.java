@@ -1,5 +1,6 @@
 package com.netradius.payvision;
 
+import com.netradius.payvision.http.HttpClient;
 import com.netradius.payvision.http.HttpURLConnectionClient;
 import com.netradius.payvision.request.PayVisionQueryRequest;
 import com.netradius.payvision.request.PayVisionRequest;
@@ -14,23 +15,25 @@ import java.io.IOException;
  */
 public class PayVisionClient {
 
-	private String url;
-	private String username;
-	private String password;
+	protected HttpClient httpClient;
+	protected String transactUrl = "https://secure.nmi.com/api/transact.php";
+	protected String queryUrl = "https://secure.nmi.com/api/query.php";
 
-	public PayVisionClient(String url, String username, String password) {
-		this.url = url;
-		this.username = username;
-		this.password = password;
+	public PayVisionClient(String username, String password) {
+		this.httpClient = new HttpURLConnectionClient(username, password);
+	}
+
+	public PayVisionClient(String transactUrl, String queryUrl, String username, String password) {
+		this(username, password);
+		this.transactUrl = transactUrl;
+		this.queryUrl = queryUrl;
 	}
 
 	public PayVisionPaymentResponse process(PayVisionRequest p) throws IOException {
-		HttpURLConnectionClient connectionClient = new HttpURLConnectionClient(username, password);
-		return connectionClient.post(url, PayVisionPaymentResponse.class, p, ResponseContentType.JSON);
+		return httpClient.post(transactUrl, PayVisionPaymentResponse.class, p, ResponseContentType.JSON);
 	}
 
 	public PayVisionQueryResponse query(PayVisionQueryRequest p) throws IOException {
-		HttpURLConnectionClient connectionClient = new HttpURLConnectionClient(username, password);
-		return connectionClient.post(url, PayVisionQueryResponse.class, p, ResponseContentType.XML);
+		return httpClient.post(queryUrl, PayVisionQueryResponse.class, p, ResponseContentType.XML);
 	}
 }
