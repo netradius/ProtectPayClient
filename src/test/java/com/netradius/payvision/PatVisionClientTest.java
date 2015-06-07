@@ -96,8 +96,9 @@ public class PatVisionClientTest {
 	@Test
 	public void testUpdate() throws IOException {
 		String orderID = "TEST" + RANDOM.nextInt();
+		int amount = Math.abs(RANDOM.nextInt()%1000);
 		PayVisionSaleRequest req = new PayVisionSaleRequest();
-		req.setAmount(new BigDecimal("152.00"));
+		req.setAmount(new BigDecimal(amount));
 		req.setCurrency("USD");
 		OrderInfo orderInfo = new OrderInfo();
 		orderInfo.setOrderId(orderID);
