@@ -21,7 +21,6 @@ public class BillingInfo implements Serializable{
 	@Size(max = 50)
 	private String city;
 
-	//TODO Format: CC
 	@Size(max = 2)
 	private String state;
 

@@ -1,9 +1,9 @@
 package com.netradius.payvision;
 
 import com.netradius.payvision.request.*;
-import com.netradius.payvision.response.PayVisionPaymentResponse;
-import com.netradius.payvision.response.PayVisionQueryResponse;
-import com.netradius.payvision.response.TransactionStatus;
+import com.netradius.payvision.response.PaycisionPaymentResponse;
+import com.netradius.payvision.response.PayvisionQueryResponse;
+import com.netradius.payvision.response.PayvisionResponseType;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,19 +12,18 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Random;
 
-
 /**
  * @author Abhinav Nahar
  */
 public class PatVisionClientTest {
 
 	public static final Random RANDOM = new Random();
-	private static PayVisionClient client;
+	private static PayvisionClient client;
 
 	@BeforeClass
 	public static void init() {
 		TestConfig config = new TestConfig();
-		client = new PayVisionClient(config.getUsername(), config.getPassword());
+		client = new PayvisionClient(config.getUsername(), config.getPassword());
 	}
 
 	@Test
@@ -39,48 +38,48 @@ public class PatVisionClientTest {
 
 	@Test
 	public void testVoid() throws IOException {
-		PayVisionPaymentResponse response = doCapture();
-		PavVisionVoidRequest req = new PavVisionVoidRequest();
+		PaycisionPaymentResponse response = doCapture();
+		PavvisionVoidRequest req = new PavvisionVoidRequest();
 		req.setTransactionId(response.getTransactionId());
 		response = client.process(req);
-		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
+		Assert.assertEquals(PayvisionResponseType.APPROVED, response.getResponseType());
 	}
 
 	@Test
 	public void testRefund() throws IOException {
-		PayVisionPaymentResponse response = doCapture();
-		PayVisionRefundRequest req = new PayVisionRefundRequest();
+		PaycisionPaymentResponse response = doCapture();
+		PayvisionRefundRequest req = new PayvisionRefundRequest();
 		req.setTransactionId(response.getTransactionId());
 		req.setAmount(new BigDecimal("50"));
 		response = client.process(req);
-		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
+		Assert.assertEquals(PayvisionResponseType.APPROVED, response.getResponseType());
 	}
 
 	@Test
 	public void testCredit() throws IOException {
-		PayVisionPaymentResponse response = doCapture();
-		PayVisionCreditRequest req = new PayVisionCreditRequest();
+		PaycisionPaymentResponse response = doCapture();
+		PayvisionCreditRequest req = new PayvisionCreditRequest();
 		req.setTransactionId(response.getTransactionId());
 		req.setAmount(new BigDecimal("50"));
 		response = client.process(req);
-		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
+		Assert.assertEquals(PayvisionResponseType.APPROVED, response.getResponseType());
 	}
 
 	@Test
 	public void testValidate() throws IOException {
-		PayVisionValidateRequest request = new PayVisionValidateRequest();
+		PayvisionValidateRequest request = new PayvisionValidateRequest();
 		request.setCreditCard(creditCard());
 		request.setBillingInfo(billingInfo());
 		request.setBillingInfo(billingInfo());
-		PayVisionPaymentResponse response = client.process(request);
-		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
+		PaycisionPaymentResponse response = client.process(request);
+		Assert.assertEquals(PayvisionResponseType.APPROVED, response.getResponseType());
 	}
 
 
 	@Test
 	public void testSale() throws IOException {
 		String orderID = "TEST" + RANDOM.nextInt();
-		PayVisionSaleRequest req = new PayVisionSaleRequest();
+		PayvisionSaleRequest req = new PayvisionSaleRequest();
 		int amount = Math.abs(RANDOM.nextInt() % 1000);
 		req.setAmount(new BigDecimal(amount));
 		req.setCurrency("USD");
@@ -89,15 +88,15 @@ public class PatVisionClientTest {
 		req.setOrderInfo(orderInfo);
 		req.setCreditCard(creditCard());
 		req.setBillingInfo(billingInfo());
-		PayVisionPaymentResponse response = client.process(req);
-		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
+		PaycisionPaymentResponse response = client.process(req);
+		Assert.assertEquals(PayvisionResponseType.APPROVED, response.getResponseType());
 	}
 
 	@Test
 	public void testUpdate() throws IOException {
 		String orderID = "TEST" + RANDOM.nextInt();
 		int amount = Math.abs(RANDOM.nextInt()%1000);
-		PayVisionSaleRequest req = new PayVisionSaleRequest();
+		PayvisionSaleRequest req = new PayvisionSaleRequest();
 		req.setAmount(new BigDecimal(amount));
 		req.setCurrency("USD");
 		OrderInfo orderInfo = new OrderInfo();
@@ -106,45 +105,45 @@ public class PatVisionClientTest {
 		req.setCreditCard(creditCard());
 		req.setBillingInfo(billingInfo());
 
-		PayVisionPaymentResponse response = client.process(req);
-		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
+		PaycisionPaymentResponse response = client.process(req);
+		Assert.assertEquals(PayvisionResponseType.APPROVED, response.getResponseType());
 
-		PayVisionUpdateRequest updateRequest = new PayVisionUpdateRequest();
+		PayvisionUpdateRequest updateRequest = new PayvisionUpdateRequest();
 		updateRequest.setFirstName("test");
 		updateRequest.setLastName("last");
 		updateRequest.setTransactionId(response.getTransactionId());
 		updateRequest.setDiscountAmount(new BigDecimal("10"));
 		response = client.process(updateRequest);
-		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
+		Assert.assertEquals(PayvisionResponseType.APPROVED, response.getResponseType());
 	}
 
 	@Test
 	public void testQuery() throws IOException {
 		RANDOM.nextInt();
-		PayVisionPaymentResponse response = doCapture();
-		PayVisionQueryRequest req = new PayVisionQueryRequest();
+		PaycisionPaymentResponse response = doCapture();
+		PayvisionQueryRequest req = new PayvisionQueryRequest();
 		req.setTransactionId(response.getTransactionId());
 	//	req.setActionType(PayVisionQueryActionType.AUTH);
-		PayVisionQueryResponse res = client.query(req);
+		PayvisionQueryResponse res = client.query(req);
 		Assert.assertNotNull(res.getTransaction());
 		Assert.assertEquals(2, res.getTransaction().getAction().length);
 	}
 
-	private PayVisionPaymentResponse doCapture() throws IOException {
+	private PaycisionPaymentResponse doCapture() throws IOException {
 		String orderID = "TEST" + RANDOM.nextInt();
-		PayVisionPaymentResponse response = doAuth(orderID);
-		PayVisionCaptureRequest payVisionPayment = new PayVisionCaptureRequest();
+		PaycisionPaymentResponse response = doAuth(orderID);
+		PayvisionCaptureRequest payVisionPayment = new PayvisionCaptureRequest();
 		payVisionPayment.setAmount(new BigDecimal("10.00"));
 		payVisionPayment.setTransactionId(response.getTransactionId());
 
 		response = client.process(payVisionPayment);
-		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
+		Assert.assertEquals(PayvisionResponseType.APPROVED, response.getResponseType());
 		return response;
 	}
 
-	private PayVisionPaymentResponse doAuth(String orderId) throws IOException {
+	private PaycisionPaymentResponse doAuth(String orderId) throws IOException {
 		int amount = Math.abs(RANDOM.nextInt()%1000);
-		PayVisionAuthRequest payVisionPayment = new PayVisionAuthRequest();
+		PayvisionAuthRequest payVisionPayment = new PayvisionAuthRequest();
 		payVisionPayment.setAmount(new BigDecimal(amount));
 		payVisionPayment.setCurrency("USD");
 		OrderInfo orderInfo = new OrderInfo();
@@ -153,8 +152,8 @@ public class PatVisionClientTest {
 		payVisionPayment.setCreditCard(creditCard());
 		payVisionPayment.setBillingInfo(billingInfo());
 		//payVisionPayment.setPaymentDescriptor(new PaymentDescriptor());
-		PayVisionPaymentResponse response = client.process(payVisionPayment);
-		Assert.assertEquals(TransactionStatus.APPROVED, response.getTransactionStatus());
+		PaycisionPaymentResponse response = client.process(payVisionPayment);
+		Assert.assertEquals(PayvisionResponseType.APPROVED, response.getResponseType());
 		return response;
 	}
 

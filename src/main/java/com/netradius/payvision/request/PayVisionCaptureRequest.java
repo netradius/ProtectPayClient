@@ -1,10 +1,7 @@
 package com.netradius.payvision.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -12,12 +9,16 @@ import java.math.BigDecimal;
  * @author Abhinav Nahar
  */
 @Data
-public class PayVisionCaptureRequest extends PayVisionRequest {
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class PayvisionCaptureRequest extends PayvisionRequest {
+
 	private BigDecimal amount;
+
 	@JsonProperty("transactionid")
 	private String transactionId;
+
 	@Setter(AccessLevel.NONE)
-	@Getter
 	private TransactionType type = TransactionType.CAPTURE;
 
 }

@@ -8,6 +8,7 @@ import lombok.Data;
  */
 @Data
 public class PaymentDescriptor {
+
 	@JsonProperty("descriptor")
 	private String descriptor;
 

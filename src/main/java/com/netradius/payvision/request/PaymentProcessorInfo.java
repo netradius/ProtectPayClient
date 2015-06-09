@@ -8,6 +8,7 @@ import lombok.Data;
  */
 @Data
 public class PaymentProcessorInfo {
+
 	@JsonProperty("processor_id")
 	private String processorId;
 

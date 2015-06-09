@@ -2,8 +2,9 @@ package com.netradius.payvision.response;
 
 /**
  * @author Abhinav Nahar
+ * @author Erik Jensen
  */
-public enum PayVisionResponseStatus {
+public enum PayvisionResponseCodeType {
 
 	TRANSACTION_APPROVED("100"),
 	TRANSACTION_DECLINED_PROCESSOR("200"),
@@ -39,14 +40,18 @@ public enum PayVisionResponseStatus {
 	PROCESSOR_FEATURE_NOT_AVAILABLE("460"),
 	UNSUPPORTED_CARD_TYPE("461");
 
-	private String id;
+	private String value;
 
-	PayVisionResponseStatus(String id) {
-		this.id = id;
+	PayvisionResponseCodeType(String value) {
+		this.value = value;
 	}
 
-	public static PayVisionResponseStatus getTransactionStatusById(String id) {
-		switch (id) {
+	public String getValue() {
+		return value;
+	}
+
+	public static PayvisionResponseCodeType getByValue(String value) {
+		switch (value) {
 			case "100":
 				return TRANSACTION_APPROVED;
 			case "200":

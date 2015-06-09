@@ -7,12 +7,8 @@ import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.netradius.payvision.response.PayVisionError;
+import com.netradius.payvision.PayvisionException;
 import com.netradius.payvision.response.ResponseContentType;
-import com.netradius.payvision.exception.PayVisionBadRequestException;
-import com.netradius.payvision.exception.PayVisionException;
-import com.netradius.payvision.exception.PayVisionForbiddenException;
-import com.netradius.payvision.exception.PayVisionNotFoundException;
 import com.netradius.payvision.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +24,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A simple HTTP com.netradius.payvision.client used to send get, update and create requests. This class uses
- * HttpURLConnection internally.
+ * A simple HTTP client used to send POST requests. This class uses HttpURLConnection internally.
  *
  * @author Erik R. Jensen
+ * @author Abhinav Nahar
  */
 public class HttpURLConnectionClient implements HttpClient, Serializable {
 
@@ -45,10 +41,10 @@ public class HttpURLConnectionClient implements HttpClient, Serializable {
 	protected String password;
 
 	/**
-	 * Creates a new HTTP com.netradius.payvision.client.
+	 * Creates a new HTTP client.
 	 *
-	 * @param username the PayStax username
-	 * @param password the PayStax password
+	 * @param username the username
+	 * @param password the password
 	 */
 	public HttpURLConnectionClient(String username, String password) {
 		authorization = username + ":" + password;
@@ -148,49 +144,34 @@ public class HttpURLConnectionClient implements HttpClient, Serializable {
 	/**
 	 * Used for error handling.
 	 *
-	 * @param x the com.netradius.payvision.client.exception thrown or null
+	 * @param x the IO error that occurred
 	 * @param conn the connection
-	 * @return the com.netradius.payvision.client.exception to throw
+	 * @return the exception containing the parsed error message and HTTP status code if any
 	 * @throws IOException if an I/O error occurs
 	 */
-	protected IOException getError(IOException x, HttpURLConnection conn) throws IOException {
+	protected PayvisionException getError(IOException x, HttpURLConnection conn) throws IOException {
 		if (conn != null) {
 			String error = readError(conn);
 			if (log.isDebugEnabled()) {
 				logResponse(conn, error);
 			}
 			int status = conn.getResponseCode();
-			switch (status) {
-				case 404:
-					return new PayVisionNotFoundException(error);
-				case 400:
-					if (error != null) {
-						List<Error> errors = mapper.readValue(error, mapper.getTypeFactory()
-										.constructCollectionType(List.class, PayVisionError.class));
-						return new PayVisionBadRequestException("Received error: " + error, errors);
-					}
-					throw new PayVisionBadRequestException();
-				case 403:
-					return new PayVisionForbiddenException(error); // TODO
-				default:
-					return new PayVisionException(error);
-			}
+			return new PayvisionException(status, error, x);
 		}
-		return x;
+		throw x;
 	}
 
 	/**
 	 * Helper method to setup the connection.
 	 *
-	 * @param method the HTTP method to use
 	 * @param url the URL to query
 	 * @return the configured connection
 	 * @throws IOException if an I/O error occurs
 	 */
-	protected HttpURLConnection setup(HttpMethod method, String url) throws IOException {
+	protected HttpURLConnection setup(String url) throws IOException {
 		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
 		conn.setRequestProperty("Authorization", authorization);
-		conn.setRequestMethod(method.toString());
+		conn.setRequestMethod("POST");
 		conn.setConnectTimeout(120 * 1000); // 2 minutes // TODO Make configurable
 		conn.setReadTimeout(120 * 1000); // 2 minutes // TODO Make configurable
 		return conn;
@@ -295,7 +276,7 @@ public class HttpURLConnectionClient implements HttpClient, Serializable {
 		InputStream in = null;
 		OutputStream out = null;
 		try {
-			conn = setup(HttpMethod.POST, url);
+			conn = setup(url);
 			conn.setDoOutput(true);
 
 			HashMap<String, Object> params = mapper.convertValue(requestObject, HashMap.class);
