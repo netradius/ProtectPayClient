@@ -4,7 +4,7 @@ import com.netradius.payvision.http.HttpClient;
 import com.netradius.payvision.http.HttpURLConnectionClient;
 import com.netradius.payvision.request.PayvisionQueryRequest;
 import com.netradius.payvision.request.PayvisionRequest;
-import com.netradius.payvision.response.PaycisionPaymentResponse;
+import com.netradius.payvision.response.PayvisionPaymentResponse;
 import com.netradius.payvision.response.PayvisionQueryResponse;
 import com.netradius.payvision.response.ResponseContentType;
 
@@ -29,8 +29,8 @@ public class PayvisionClient {
 		this.queryUrl = queryUrl;
 	}
 
-	public PaycisionPaymentResponse process(PayvisionRequest p) throws IOException {
-		return httpClient.post(transactUrl, PaycisionPaymentResponse.class, p, ResponseContentType.JSON);
+	public PayvisionPaymentResponse process(PayvisionRequest p) throws IOException {
+		return httpClient.post(transactUrl, PayvisionPaymentResponse.class, p, ResponseContentType.JSON);
 	}
 
 	public PayvisionQueryResponse query(PayvisionQueryRequest p) throws IOException {

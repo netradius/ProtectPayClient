@@ -16,7 +16,7 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @Data
-public class PaycisionPaymentResponse implements Serializable {
+public class PayvisionPaymentResponse implements Serializable {
 
 	@JsonProperty("response")
 	private String response;
