@@ -15,7 +15,7 @@ import java.util.Random;
 /**
  * @author Abhinav Nahar
  */
-public class PatVisionClientTest {
+public class PayvisionClientTest {
 
 	public static final Random RANDOM = new Random();
 	private static PayvisionClient client;
@@ -39,7 +39,7 @@ public class PatVisionClientTest {
 	@Test
 	public void testVoid() throws IOException {
 		PayvisionPaymentResponse response = doCapture();
-		PavvisionVoidRequest req = new PavvisionVoidRequest();
+		PayvisionVoidRequest req = new PayvisionVoidRequest();
 		req.setTransactionId(response.getTransactionId());
 		response = client.process(req);
 		Assert.assertEquals(PayvisionResponseType.APPROVED, response.getResponseType());

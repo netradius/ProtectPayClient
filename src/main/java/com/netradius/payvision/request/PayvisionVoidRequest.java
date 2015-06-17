@@ -9,7 +9,7 @@ import lombok.*;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class PavvisionVoidRequest extends PayvisionRequest {
+public class PayvisionVoidRequest extends PayvisionRequest {
 
 	@Setter(AccessLevel.NONE)
 	@Getter
