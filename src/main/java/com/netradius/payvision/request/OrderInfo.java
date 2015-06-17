@@ -2,6 +2,7 @@ package com.netradius.payvision.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
  * @author Abhinav Nahar
  */
 @Data
+@Accessors(chain = true)
 public class OrderInfo {
 
 	@JsonProperty("tax")

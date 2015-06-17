@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 /**
  * @author Abhianv Nahar
@@ -11,7 +12,8 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class PayvisionQueryRequest extends PayvisionRequest {
+@Accessors(chain = true)
+public class PayvisionQueryRequest extends PayvisionRequest<PayvisionQueryRequest> {
 
 	@JsonProperty("transaction_id")
 	private String transactionId;

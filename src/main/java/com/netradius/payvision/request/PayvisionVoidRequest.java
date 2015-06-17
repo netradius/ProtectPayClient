@@ -2,6 +2,7 @@ package com.netradius.payvision.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 /**
  * @author Abhinav Nahar
@@ -9,7 +10,8 @@ import lombok.*;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class PayvisionVoidRequest extends PayvisionRequest {
+@Accessors(chain = true)
+public class PayvisionVoidRequest extends PayvisionRequest<PayvisionVoidRequest> {
 
 	@Setter(AccessLevel.NONE)
 	@Getter

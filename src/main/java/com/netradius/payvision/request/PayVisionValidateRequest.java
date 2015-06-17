@@ -1,6 +1,7 @@
 package com.netradius.payvision.request;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 /**
  * @author Abhinav Nahar
@@ -8,7 +9,8 @@ import lombok.*;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class PayvisionValidateRequest extends PayvisionRequest {
+@Accessors(chain = true)
+public class PayvisionValidateRequest extends PayvisionRequest<PayvisionValidateRequest> {
 
 	@Setter(AccessLevel.NONE)
 	private TransactionType type = TransactionType.UPDATE;
