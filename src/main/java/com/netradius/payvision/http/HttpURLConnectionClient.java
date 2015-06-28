@@ -10,6 +10,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.netradius.payvision.PayvisionException;
 import com.netradius.payvision.response.ResponseContentType;
 import com.netradius.payvision.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,10 +30,10 @@ import java.util.Map;
  * @author Erik R. Jensen
  * @author Abhinav Nahar
  */
+@Slf4j
 public class HttpURLConnectionClient implements HttpClient, Serializable {
 
 	private static final long serialVersionUID = -5275552394410711694L;
-	private static final Logger log = LoggerFactory.getLogger(HttpURLConnectionClient.class);
 
 	protected static ObjectMapper mapper = new ObjectMapper();
 	protected static ObjectMapper xmlMapper = new XmlMapper();

@@ -1,4 +1,4 @@
-package com.netradius.payvision;
+package com.netradius.payvision.integration;
 
 import lombok.extern.slf4j.Slf4j;
 
