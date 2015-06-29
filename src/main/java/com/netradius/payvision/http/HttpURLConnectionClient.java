@@ -203,10 +203,10 @@ public class HttpURLConnectionClient implements HttpClient, Serializable {
 
 	@SuppressWarnings("unchecked")
 	private String mapToQueryParams(HashMap<String, Object> params) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("username").append("=").append(username).append("&");
-		sb.append("password").append("=").append(password).append("&");
-		DecimalFormat d = new DecimalFormat("0.00");
+		DecimalFormat fmt = new DecimalFormat("0.00");
+		QueryStringBuilder qb = new QueryStringBuilder()
+				.add("username", username)
+				.add("password", password);
 		for (Map.Entry<String, Object> entrySet : params.entrySet()) {
 			if (entrySet.getValue() instanceof Map) {
 				Map<String, Object> temp = (Map) entrySet.getValue();
@@ -215,29 +215,28 @@ public class HttpURLConnectionClient implements HttpClient, Serializable {
 					.filter(entrySet1 -> entrySet1.getValue() != null && StringUtils.hasText(entrySet1.getValue().toString()))
 					.forEach(entrySet1 -> {
 						if (entrySet1.getValue() instanceof Double) {
-							String amtFmt = d.format(entrySet1.getValue());
-							sb.append(entrySet1.getKey()).append("=").append(amtFmt).append("&");
+							String amtFmt = fmt.format(entrySet1.getValue());
+							qb.add(entrySet1.getKey(), amtFmt);
 						} else if (entrySet1.getValue() instanceof Enum) {
-							sb.append(entrySet.getKey()).append("=").append(entrySet1.getValue().toString().toLowerCase()).append("&");
+							qb.add(entrySet.getKey(), entrySet1.getValue().toString().toLowerCase());
 						} else {
-							sb.append(entrySet1.getKey()).append("=").append(entrySet1.getValue()).append("&");
+							qb.add(entrySet1.getKey(), entrySet1.getValue());
 						}
 					});
 			} else {
 				if (entrySet.getValue() != null && StringUtils.hasText(entrySet.getValue().toString())) {
-
 					if (entrySet.getValue() instanceof Double) {
-						String amtFmt = d.format(entrySet.getValue());
-						sb.append(entrySet.getKey()).append("=").append(amtFmt).append("&");
+						String amtFmt = fmt.format(entrySet.getValue());
+						qb.add(entrySet.getKey(), amtFmt);
 					} else if (entrySet.getValue() instanceof Enum) {
-						sb.append(entrySet.getKey()).append("=").append(entrySet.getValue().toString().toLowerCase()).append("&");
+						qb.add(entrySet.getKey(), entrySet.getValue().toString().toLowerCase());
 					} else {
-						sb.append(entrySet.getKey()).append("=").append(entrySet.getValue()).append("&");
+						qb.add(entrySet.getKey(), entrySet.getValue());
 					}
 				}
 			}
 		}
-		return sb.toString();
+		return qb.toQueryString();
 	}
 
 	private <T> T convertStringToResponse(String response, Class<T> responseTypeClazz, ResponseContentType contentType) {

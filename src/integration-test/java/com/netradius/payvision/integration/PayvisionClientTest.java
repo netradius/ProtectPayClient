@@ -51,7 +51,7 @@ public class PayvisionClientTest {
 		PayvisionPaymentResponse response = doCapture();
 		PayvisionRefundRequest req = new PayvisionRefundRequest()
 				.setTransactionId(response.getTransactionId())
-				.setAmount(new BigDecimal("50"));
+				.setAmount(new BigDecimal("1"));
 		response = client.process(req);
 		Assert.assertEquals(PayvisionResponseType.APPROVED, response.getResponseType());
 	}
