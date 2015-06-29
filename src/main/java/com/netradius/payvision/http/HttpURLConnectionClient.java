@@ -9,13 +9,15 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.netradius.payvision.PayvisionException;
 import com.netradius.payvision.response.ResponseContentType;
+import com.netradius.payvision.util.LogFilter;
 import com.netradius.payvision.util.StringUtils;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.DatatypeConverter;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -30,16 +32,14 @@ import java.util.Map;
  * @author Erik R. Jensen
  * @author Abhinav Nahar
  */
-@Slf4j
-public class HttpURLConnectionClient implements HttpClient, Serializable {
-
-	private static final long serialVersionUID = -5275552394410711694L;
+public class HttpURLConnectionClient implements HttpClient {
 
 	protected static ObjectMapper mapper = new ObjectMapper();
 	protected static ObjectMapper xmlMapper = new XmlMapper();
 	protected String authorization;
 	protected String username;
 	protected String password;
+	protected LogFilter log;
 
 	/**
 	 * Creates a new HTTP client.
@@ -48,6 +48,7 @@ public class HttpURLConnectionClient implements HttpClient, Serializable {
 	 * @param password the password
 	 */
 	public HttpURLConnectionClient(String username, String password) {
+		log = new LogFilter(LoggerFactory.getLogger(getClass()), password);
 		authorization = username + ":" + password;
 		authorization = "Basic " + DatatypeConverter.printBase64Binary(authorization.getBytes(Charset.forName("UTF-8")));
 		this.username = username;
