@@ -22,9 +22,16 @@ public class LogFilter {
 	}
 
 	protected String lastFourDigits(String accountNumber) {
-		return StringUtils.hasText(accountNumber) && accountNumber.length() >= 4
-				? accountNumber.substring(accountNumber.length() - 4, accountNumber.length())
-				: null;
+		if (StringUtils.hasText(accountNumber) && accountNumber.length() >= 4) {
+			int idx = accountNumber.length() - 4;
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < idx; i++) {
+				sb.append("*");
+			}
+			sb.append(accountNumber.substring(idx, accountNumber.length()));
+			return sb.toString();
+		}
+		return accountNumber;
 	}
 
 	protected String filter(String s) {
