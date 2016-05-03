@@ -133,8 +133,11 @@
 					</execution>
 				</executions>
 				<configuration>
+					<vmArgs>
+						<vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+					</vmArgs>
 					<wsdlUrls>
-						<wsdlUrl>http://protectpaytest.propay.com/API/SPS.svc?wsdl</wsdlUrl>
+						<wsdlUrl>http://protectpaytest.propay.com/API/sps.svc?wsdl</wsdlUrl>
 					</wsdlUrls>
 				</configuration>
 			</plugin>
