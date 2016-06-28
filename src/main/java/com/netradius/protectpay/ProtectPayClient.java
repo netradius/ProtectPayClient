@@ -30,6 +30,7 @@ public class ProtectPayClient {
 	private ObjectFactory typesFactory;
 	private org.datacontract.schemas._2004._07.propay_contracts_sps.ObjectFactory contractsFactory;
 	private ID id;
+	private URL serviceUrl;
 
 	private enum Type {
 		AUTH,
@@ -46,8 +47,7 @@ public class ProtectPayClient {
 	 */
 	public ProtectPayClient(String wsdlUrl, String authenticationToken, String billerAccountId) {
 		try {
-			SPS sps = new SPS(new URL(wsdlUrl));
-			service = sps.getBasicHttpBindingSPSService();
+			serviceUrl = new URL(wsdlUrl);
 		} catch (MalformedURLException x) {
 			throw new IllegalArgumentException("Invalid URL [" + wsdlUrl + "]: " + x.getMessage(), x);
 		}
@@ -56,6 +56,15 @@ public class ProtectPayClient {
 		id = typesFactory.createID();
 		id.setAuthenticationToken(typesFactory.createIDAuthenticationToken(authenticationToken));
 		id.setBillerAccountId(typesFactory.createIDBillerAccountId(billerAccountId));
+	}
+
+	private void initService() {
+		try {
+			SPS sps = new SPS(serviceUrl);
+			service = sps.getBasicHttpBindingSPSService();
+		} catch (Exception x) {
+			throw new IllegalArgumentException("Error initializng service: [" + serviceUrl.toString() + "]: " + x.getMessage(), x);
+		}
 	}
 
 	private void checkResult(Result result) throws ProtectPayException {
@@ -198,6 +207,9 @@ public class ProtectPayClient {
 	 * @throws ProtectPayException if the request fails
 	 */
 	public String createPayer(String accountName) throws ProtectPayException {
+		if(service == null) {
+			initService();
+		}
 		CreateAccountInformationResult response = service.createPayer(id, accountName);
 		Result result = response.getRequestResult().getValue();
 		checkResult(result);
@@ -214,6 +226,9 @@ public class ProtectPayClient {
 	 * @throws ProtectPayException if the request fails
 	 */
 	public String createPayer(ProtectPayPayer protectPayPayer) throws ProtectPayException {
+		if(service == null) {
+			initService();
+		}
 		CreateAccountInformationResult response = service.createPayerWithData(id, toPayerData(protectPayPayer));
 		Result result = response.getRequestResult().getValue();
 		checkResult(result);
@@ -230,6 +245,9 @@ public class ProtectPayClient {
 	 * @throws ProtectPayException if the request fails
 	 */
 	public void updatePayer(ProtectPayPayer protectPayPayer) throws ProtectPayException {
+		if(service == null) {
+			initService();
+		}
 		EditPayerRequest request = new EditPayerRequest();
 		request.setPayerAccountId(contractsFactory.createEditPayerRequestPayerAccountId(protectPayPayer.getPayerAccountId()));
 		request.setUpdatedData(contractsFactory.createEditPayerRequestUpdatedData(toPayerData(protectPayPayer)));
@@ -245,6 +263,9 @@ public class ProtectPayClient {
 	 * @throws ProtectPayException if the request fails
 	 */
 	public void deletePayer(String payerAccountId) throws ProtectPayException {
+		if(service == null) {
+			initService();
+		}
 		Result result = service.deletePayer(id, payerAccountId);
 		checkResult(result);
 	}
@@ -258,6 +279,9 @@ public class ProtectPayClient {
 	 * @throws ProtectPayException if the request fails
 	 */
 	public List<ProtectPayPayer> getPayers(ProtectPayPayer protectPayPayer) throws ProtectPayException {
+		if(service == null) {
+			initService();
+		}
 		GetPayersResult response = service.getPayers(id, protectPayPayer == null ? null : toPayerData(protectPayPayer));
 		Result result = response.getRequestResult().getValue();
 		checkResult(result);
@@ -287,6 +311,9 @@ public class ProtectPayClient {
 	 * @throws ProtectPayException if the request fails
 	 */
 	public String createPaymentMethod(ProtectPayPaymentMethod protectPayPaymentMethod) throws ProtectPayException {
+		if(service == null) {
+			initService();
+		}
 		PaymentMethodAdd request = new PaymentMethodAdd();
 		if (protectPayPaymentMethod.getAccountCountryCode() != null) {
 			request.setAccountCountryCode(typesFactory.createPaymentMethodAddAccountCountryCode(
@@ -332,6 +359,9 @@ public class ProtectPayClient {
 	 * @throws ProtectPayException if the request fails
 	 */
 	public void updatePaymentMethod(ProtectPayPaymentMethod protectPayPaymentMethod) throws ProtectPayException {
+		if(service == null) {
+			initService();
+		}
 		PaymentMethodUpdate request = new PaymentMethodUpdate();
 		request.setPayerAccountId(typesFactory.createPaymentMethodUpdatePayerAccountId(protectPayPaymentMethod.getPayerAccountId()));
 		request.setAccountName(typesFactory.createPaymentMethodUpdateAccountName(protectPayPaymentMethod.getAccountName()));
@@ -361,6 +391,9 @@ public class ProtectPayClient {
 	 * @throws ProtectPayException if the request fails
 	 */
 	public void deletePaymentMethod(String payerAccountId, String paymentMethodId) throws ProtectPayException {
+		if(service == null) {
+			initService();
+		}
 		Result result = service.deletePaymentMethod(id, payerAccountId, paymentMethodId);
 		checkResult(result);
 	}
@@ -374,6 +407,9 @@ public class ProtectPayClient {
 	 * @throws ProtectPayException if the request fails
 	 */
 	public List<ProtectPayPaymentMethod> getPaymentMethods(String payerAccountId) throws ProtectPayException {
+		if(service == null) {
+			initService();
+		}
 		PaymentMethodsResult response = service.getAllPayerPaymentMethods(id, payerAccountId);
 		Result result = response.getRequestResult().getValue();
 		checkResult(result);
@@ -400,6 +436,9 @@ public class ProtectPayClient {
 	 */
 	public ProtectPayPaymentMethod getPaymentMethod(String payerAccountId, String paymentMethodId)
 			throws ProtectPayException {
+		if(service == null) {
+			initService();
+		}
 		PaymentMethodsResult response = service.getPayerPaymentMethod(id, payerAccountId, paymentMethodId);
 		Result result = response.getRequestResult().getValue();
 		checkResult(result);
@@ -414,6 +453,9 @@ public class ProtectPayClient {
 
 	private ProtectPayPaymentResponse transact(ProtectPayPayment protectPayPayment, CreditCardOverride cco, ACHOverride ao,
 			boolean recurring, Type type) throws ProtectPayException {
+		if(service == null) {
+			initService();
+		}
 		Transaction transaction = toTransaction(protectPayPayment);
 		PaymentInfoOverrides paymentInfoOverrides = new PaymentInfoOverrides();
 		if (cco != null) {
@@ -517,6 +559,9 @@ public class ProtectPayClient {
 	 */
 	public ProtectPayPaymentResponse capture(ProtectPayPriorPayment payment, int amount)
 			throws ProtectPayException {
+		if(service == null) {
+			initService();
+		}
 		CaptureRequest request = new CaptureRequest();
 		if (payment.getMerchantProfileId() != null) {
 			request.setMerchantProfileId(
@@ -606,6 +651,9 @@ public class ProtectPayClient {
 	 * @throws ProtectPayException if an error is returned from ProtectPay
 	 */
 	public ProtectPayPaymentResponse voidPayment(ProtectPayPriorPayment protectPayPriorPayment) throws ProtectPayException {
+		if(service == null) {
+			initService();
+		}
 		VoidRequest request = new VoidRequest();
 		request.setOriginalTransactionId(
 				contractsFactory.createVoidRequestOriginalTransactionId(protectPayPriorPayment.getOriginalTransactionId()));
@@ -635,6 +683,9 @@ public class ProtectPayClient {
 	 * @throws ProtectPayException if an error is returned from ProtectPay
 	 */
 	public ProtectPayPaymentResponse refund( ProtectPayPriorPayment protectPayPriorPayment, Integer amount) throws ProtectPayException {
+		if(service == null) {
+			initService();
+		}
 		RefundRequest request = new RefundRequest();
 		request.setComment1(
 				contractsFactory.createRefundRequestComment1(protectPayPriorPayment.getComment1()));
@@ -705,6 +756,9 @@ public class ProtectPayClient {
 	 */
 	public String getTempToken(String payerAccountId, String payerName, Integer duration)
 			throws ProtectPayException {
+		if(service == null) {
+			initService();
+		}
 		TempTokenRequest request = new TempTokenRequest();
 		request.setIdentification(typesFactory.createTempTokenRequestIdentification(id));
 		PayerInformation payerInfo = new PayerInformation();
@@ -733,6 +787,9 @@ public class ProtectPayClient {
 	 */
 	public Long createMerchantProfile(String paymentProcessor, String profileName,
 			Map<String, String> processorDatum) throws ProtectPayException {
+		if(service == null) {
+			initService();
+		}
 		MerchantProfileData data = new MerchantProfileData();
 		data.setPaymentProcessor(contractsFactory.createMerchantProfileDataPaymentProcessor(paymentProcessor));
 		data.setProfileName(contractsFactory.createMerchantProfileDataProfileName(profileName));
