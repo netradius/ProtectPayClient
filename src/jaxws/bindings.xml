@@ -1,9 +1,9 @@
 <jaxb:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
-							   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-							   version="1.0">
-<jaxb:bindings schemaLocation="http://protectpaytest.propay.com/API/sps.svc?xsd=xsd4">
-	<jaxb:bindings node="//xs:element[@name='Data']">
-		<jaxb:factoryMethod name="Data2"/>
+               xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               version="1.0">
+	<jaxb:bindings schemaLocation="https://xmltestapi.propay.com/protectpay/sps.svc?xsd=xsd4">
+		<jaxb:bindings node="//xs:element[@name='Data']">
+			<jaxb:factoryMethod name="Data2"/>
+		</jaxb:bindings>
 	</jaxb:bindings>
-</jaxb:bindings>
 </jaxb:bindings>
