@@ -1,10 +1,13 @@
 package com.netradius.protectpay.oneoff;
 
 import com.netradius.protectpay.ProtectPayBillingInfo;
+import com.netradius.protectpay.ProtectPayBillingInfo.Country;
 import com.netradius.protectpay.ProtectPayClient;
 import com.netradius.protectpay.ProtectPayException;
 import com.netradius.protectpay.ProtectPayPayer;
 import com.netradius.protectpay.ProtectPayPaymentMethod;
+import com.netradius.protectpay.ProtectPayPaymentMethod.DuplicateAction;
+import com.netradius.protectpay.ProtectPayPaymentMethod.Type;
 import com.netradius.protectpay.ProtectPayPayment;
 import com.netradius.protectpay.ProtectPayPriorPayment;
 import com.netradius.protectpay.ProtectPayPaymentResponse;
@@ -77,17 +80,17 @@ public class ProtectPayClientTest {
       ProtectPayPaymentMethod protectPayPaymentMethod = new ProtectPayPaymentMethod();
       protectPayPaymentMethod.setAccountName("John Doe");
       protectPayPaymentMethod.setPriority(1);
-      protectPayPaymentMethod.setType(ProtectPayPaymentMethod.Type.Visa);
+      protectPayPaymentMethod.setType(Type.Visa);
       protectPayPaymentMethod.setAccountNumber("4111111111111111");
       protectPayPaymentMethod.setDescription("Test Payment Method");
-      protectPayPaymentMethod.setDuplicateAction(ProtectPayPaymentMethod.DuplicateAction.ERROR);
+      protectPayPaymentMethod.setDuplicateAction(DuplicateAction.ERROR);
       protectPayPaymentMethod.setExpirationDate("0625");
       protectPayPaymentMethod.setPayerAccountId(protectPayPayer.getPayerAccountId());
       ProtectPayBillingInfo protectPayBillingInfo = new ProtectPayBillingInfo();
       protectPayBillingInfo.setAddress1("PO Box 463");
       protectPayBillingInfo.setCity("Draper");
       protectPayBillingInfo.setState("UT");
-      protectPayBillingInfo.setCountry(ProtectPayBillingInfo.Country.USA);
+      protectPayBillingInfo.setCountry(Country.USA);
       protectPayBillingInfo.setZipCode("84020");
       protectPayBillingInfo.setEmailAddress("test@netradius.com");
       protectPayPaymentMethod.setBilling(protectPayBillingInfo);
