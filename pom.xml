@@ -138,6 +138,8 @@
 						<vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
 					</vmArgs>
 					<wsdlUrls>
+						<!--old wsdl replaced and similarly in the bindings file-->
+						<!--<wsdlUrl>http://protectpaytest.propay.com/API/sps.svc?wsdl</wsdlUrl>-->
 						<wsdlUrl>https://xmltestapi.propay.com/protectpay/sps.svc?wsdl</wsdlUrl>
 					</wsdlUrls>
 				</configuration>
